@@ -1235,9 +1235,7 @@ trait Invokable<T: Config>: Sized {
 	/// We enforce a re-entrancy guard here by initializing and checking a boolean flag through a
 	/// global reference.
 	fn run_guarded(self, common: CommonInput<T>) -> InternalOutput<T, Self::Output> {
-		// Set up a global reference to the boolean flag used for the re-entrancy guard.
-		environmental!(executing_contract: bool);
-
+		
 		let gas_limit = common.gas_limit;
 
 		// Check whether the origin is allowed here. The logic of the access rules

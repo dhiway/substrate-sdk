@@ -26,10 +26,15 @@ workspace = true
 
 [dependencies]
 color-eyre = { workspace = true }
-tikv-jemallocator = { optional = true, features = ["unprefixed_malloc_on_supported_platforms"], workspace = true }
+tikv-jemallocator = { optional = true, features = [
+  "unprefixed_malloc_on_supported_platforms",
+], workspace = true }
 
 # Crates in our workspace, defined as dependencies so we can pass them feature flags.
-polkadot-cli = { features = ["rococo-native", "westend-native"], workspace = true, default-features = true }
+polkadot-cli = { features = [
+  "rococo-native",
+  "westend-native",
+], workspace = true, default-features = true }
 polkadot-node-core-pvf = { workspace = true, default-features = true }
 polkadot-node-core-pvf-prepare-worker = { workspace = true, default-features = true }
 polkadot-overseer = { workspace = true, default-features = true }
@@ -39,7 +44,9 @@ polkadot-node-core-pvf-common = { workspace = true, default-features = true }
 polkadot-node-core-pvf-execute-worker = { workspace = true, default-features = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-tikv-jemallocator = { version = "0.5.0", features = ["unprefixed_malloc_on_supported_platforms"] }
+tikv-jemallocator = { version = "0.5.0", features = [
+  "unprefixed_malloc_on_supported_platforms",
+] }
 
 [dev-dependencies]
 assert_cmd = { workspace = true }
@@ -62,10 +69,10 @@ fast-runtime = ["polkadot-cli/fast-runtime"]
 runtime-metrics = ["polkadot-cli/runtime-metrics"]
 pyroscope = ["polkadot-cli/pyroscope"]
 jemalloc-allocator = [
-	"dep:tikv-jemallocator",
-	"polkadot-node-core-pvf-prepare-worker/jemalloc-allocator",
-	"polkadot-node-core-pvf/jemalloc-allocator",
-	"polkadot-overseer/jemalloc-allocator",
+  "dep:tikv-jemallocator",
+  "polkadot-node-core-pvf-prepare-worker/jemalloc-allocator",
+  "polkadot-node-core-pvf/jemalloc-allocator",
+  "polkadot-overseer/jemalloc-allocator",
 ]
 
 
@@ -83,26 +90,26 @@ license-file = ["LICENSE", "0"]
 # https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 maintainer-scripts = "scripts/packaging/deb-maintainer-scripts"
 assets = [
-	[
-		"target/release/polkadot",
-		"/usr/bin/",
-		"755",
-	],
-	[
-		"target/release/polkadot-prepare-worker",
-		"/usr/lib/polkadot/",
-		"755",
-	],
-	[
-		"target/release/polkadot-execute-worker",
-		"/usr/lib/polkadot/",
-		"755",
-	],
-	[
-		"scripts/packaging/polkadot.service",
-		"/lib/systemd/system/",
-		"644",
-	],
+  [
+    "target/release/polkadot",
+    "/usr/bin/",
+    "755",
+  ],
+  [
+    "target/release/polkadot-prepare-worker",
+    "/usr/lib/polkadot/",
+    "755",
+  ],
+  [
+    "target/release/polkadot-execute-worker",
+    "/usr/lib/polkadot/",
+    "755",
+  ],
+  [
+    "scripts/packaging/polkadot.service",
+    "/lib/systemd/system/",
+    "644",
+  ],
 ]
 conf-files = ["/etc/default/polkadot"]
 

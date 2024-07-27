@@ -297,7 +297,7 @@ pub fn run() -> Result<()> {
 
 	#[cfg(not(feature = "pyroscope"))]
 	if cli.run.pyroscope_server.is_some() {
-		return Err(Error::PyroscopeNotCompiledIn)
+		return Err(Error::PyroscopeNotCompiledIn);
 	}
 
 	match &cli.subcommand {
@@ -396,13 +396,14 @@ pub fn run() -> Result<()> {
 
 			match cmd {
 				#[cfg(not(feature = "runtime-benchmarks"))]
-				BenchmarkCmd::Storage(_) =>
+				BenchmarkCmd::Storage(_) => {
 					return Err(sc_cli::Error::Input(
 						"Compile with --features=runtime-benchmarks \
 						to enable storage benchmarks."
 							.into(),
 					)
-					.into()),
+					.into())
+				},
 				#[cfg(feature = "runtime-benchmarks")]
 				BenchmarkCmd::Storage(cmd) => runner.sync_run(|mut config| {
 					let (client, backend, _, _) =
@@ -418,7 +419,7 @@ pub fn run() -> Result<()> {
 					cmd.run(client.clone()).map_err(Error::SubstrateCli)
 				}),
 				// These commands are very similar and can be handled in nearly the same way.
-				BenchmarkCmd::Extrinsic(_) | BenchmarkCmd::Overhead(_) =>
+				BenchmarkCmd::Extrinsic(_) | BenchmarkCmd::Overhead(_) => {
 					runner.sync_run(|mut config| {
 						let (client, _, _, _) = polkadot_service::new_chain_ops(&mut config, None)?;
 						let header = client.header(client.info().genesis_hash).unwrap().unwrap();
@@ -454,7 +455,8 @@ pub fn run() -> Result<()> {
 								.map_err(Error::SubstrateCli),
 							_ => unreachable!("Ensured by the outside match; qed"),
 						}
-					}),
+					})
+				},
 				BenchmarkCmd::Pallet(cmd) => {
 					set_default_ss58_version(chain_spec);
 

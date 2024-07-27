@@ -11,7 +11,7 @@ license = "Apache-2.0"
 workspace = true
 
 [[bin]]
-name = "polkadot-parachain"
+name = "loom-parachain"
 path = "src/main.rs"
 
 [dependencies]
@@ -95,7 +95,10 @@ substrate-state-trie-migration-rpc = { workspace = true, default-features = true
 
 # Polkadot
 # Use rococo-native as this is currently the default "local" relay chain
-polkadot-cli = { features = ["rococo-native", "westend-native"], workspace = true, default-features = true }
+polkadot-cli = { features = [
+	"rococo-native",
+	"westend-native",
+], workspace = true, default-features = true }
 polkadot-primitives = { workspace = true, default-features = true }
 polkadot-service = { workspace = true, default-features = true }
 xcm = { workspace = true, default-features = true }
@@ -120,7 +123,11 @@ substrate-build-script-utils = { workspace = true, default-features = true }
 assert_cmd = { workspace = true }
 nix = { features = ["signal"], workspace = true }
 tempfile = { workspace = true }
-tokio = { features = ["macros", "parking_lot", "time"], workspace = true, default-features = true }
+tokio = { features = [
+	"macros",
+	"parking_lot",
+	"time",
+], workspace = true, default-features = true }
 wait-timeout = { workspace = true }
 
 [features]

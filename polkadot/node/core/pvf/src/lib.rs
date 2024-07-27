@@ -147,11 +147,10 @@ pub(crate) const SECURE_MODE_WARNING: &'static str = "🚨 Some security issues 
 \nRunning validation of malicious PVF code has a higher risk of compromising this machine.";
 // Message to be printed only when running securely and mandatory errors occurred.
 pub(crate) const IGNORE_SECURE_MODE_TIP: &'static str =
-"\nYou can ignore this error with the `--insecure-validator-i-know-what-i-do` \
+	"\nYou can ignore this error with the `--insecure-validator-i-know-what-i-do` \
 command line argument if you understand and accept the risks of running insecurely. \
-With this flag, security features are enabled on a best-effort basis, but not mandatory. \
-\nMore information: https://wiki.polkadot.network/docs/maintain-guides-secure-validator#secure-validator-mode";
+With this flag, security features are enabled on a best-effort basis, but not mandatory.";
 // Only Linux supports security features
 #[cfg(not(target_os = "linux"))]
-pub(crate) const SECURE_LINUX_NOTE: &'static str = "\nSecure mode is enabled only for Linux \
-\nand a full secure mode is enabled only for Linux x86-64.";
+pub(crate) const SECURE_LINUX_NOTE: &'static str =
+	"\nSecure mode is enabled only for Linux x86-64.";

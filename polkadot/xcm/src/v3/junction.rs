@@ -78,6 +78,8 @@ pub enum NetworkId {
 	BitcoinCash,
 	/// The Polkadot Bulletin chain.
 	PolkadotBulletin,
+	/// The CORD Loom mainnet Relay-chain
+	CordLoom,
 }
 
 impl From<OldNetworkId> for Option<NetworkId> {
@@ -125,6 +127,7 @@ impl From<NewNetworkId> for NetworkId {
 			BitcoinCore => Self::BitcoinCore,
 			BitcoinCash => Self::BitcoinCash,
 			PolkadotBulletin => Self::PolkadotBulletin,
+			CordLoom => Self::CordLoom,
 		}
 	}
 }
@@ -181,14 +184,15 @@ impl TryFrom<OldBodyId> for BodyId {
 		use OldBodyId::*;
 		Ok(match value {
 			Unit => Self::Unit,
-			Named(n) =>
+			Named(n) => {
 				if n.len() == 4 {
 					let mut r = [0u8; 4];
 					r.copy_from_slice(&n[..]);
 					Self::Moniker(r)
 				} else {
-					return Err(())
-				},
+					return Err(());
+				}
+			},
 			Index(n) => Self::Index(n),
 			Executive => Self::Executive,
 			Technical => Self::Technical,
@@ -384,8 +388,9 @@ impl<'a> TryFrom<&'a Junction> for BoundedSlice<'a, u8, ConstU32<32>> {
 	type Error = ();
 	fn try_from(key: &'a Junction) -> Result<Self, ()> {
 		match key {
-			Junction::GeneralKey { length, data } =>
-				BoundedSlice::try_from(&data[..data.len().min(*length as usize)]).map_err(|_| ()),
+			Junction::GeneralKey { length, data } => {
+				BoundedSlice::try_from(&data[..data.len().min(*length as usize)]).map_err(|_| ())
+			},
 			_ => Err(()),
 		}
 	}
@@ -416,8 +421,9 @@ impl TryFrom<OldJunction> for Junction {
 		Ok(match value {
 			Parachain(id) => Self::Parachain(id),
 			AccountId32 { network, id } => Self::AccountId32 { network: network.into(), id },
-			AccountIndex64 { network, index } =>
-				Self::AccountIndex64 { network: network.into(), index },
+			AccountIndex64 { network, index } => {
+				Self::AccountIndex64 { network: network.into(), index }
+			},
 			AccountKey20 { network, key } => Self::AccountKey20 { network: network.into(), key },
 			PalletInstance(index) => Self::PalletInstance(index),
 			GeneralIndex(id) => Self::GeneralIndex(id),
@@ -433,8 +439,9 @@ impl TryFrom<OldJunction> for Junction {
 				_ => return Err(()),
 			},
 			OnlyChild => Self::OnlyChild,
-			Plurality { id, part } =>
-				Self::Plurality { id: id.try_into()?, part: part.try_into()? },
+			Plurality { id, part } => {
+				Self::Plurality { id: id.try_into()?, part: part.try_into()? }
+			},
 		})
 	}
 }
@@ -446,12 +453,15 @@ impl TryFrom<NewJunction> for Junction {
 		use NewJunction::*;
 		Ok(match value {
 			Parachain(id) => Self::Parachain(id),
-			AccountId32 { network: maybe_network, id } =>
-				Self::AccountId32 { network: maybe_network.map(|network| network.into()), id },
-			AccountIndex64 { network: maybe_network, index } =>
-				Self::AccountIndex64 { network: maybe_network.map(|network| network.into()), index },
-			AccountKey20 { network: maybe_network, key } =>
-				Self::AccountKey20 { network: maybe_network.map(|network| network.into()), key },
+			AccountId32 { network: maybe_network, id } => {
+				Self::AccountId32 { network: maybe_network.map(|network| network.into()), id }
+			},
+			AccountIndex64 { network: maybe_network, index } => {
+				Self::AccountIndex64 { network: maybe_network.map(|network| network.into()), index }
+			},
+			AccountKey20 { network: maybe_network, key } => {
+				Self::AccountKey20 { network: maybe_network.map(|network| network.into()), key }
+			},
 			PalletInstance(index) => Self::PalletInstance(index),
 			GeneralIndex(id) => Self::GeneralIndex(id),
 			GeneralKey { length, data } => Self::GeneralKey { length, data },
@@ -489,9 +499,9 @@ impl Junction {
 	pub fn remove_network_id(&mut self) {
 		use Junction::*;
 		match self {
-			AccountId32 { ref mut network, .. } |
-			AccountIndex64 { ref mut network, .. } |
-			AccountKey20 { ref mut network, .. } => *network = None,
+			AccountId32 { ref mut network, .. }
+			| AccountIndex64 { ref mut network, .. }
+			| AccountKey20 { ref mut network, .. } => *network = None,
 			_ => {},
 		}
 	}

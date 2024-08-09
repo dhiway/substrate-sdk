@@ -11935,7 +11935,7 @@ dependencies = [
 
 [[package]]
 name = "pallet-xcm"
-version = "7.0.0"
+version = "17.0.0"
 dependencies = [
  "bounded-collections",
  "frame-benchmarking",

@@ -78,6 +78,8 @@ pub enum NetworkId {
 	BitcoinCash,
 	/// The Polkadot Bulletin chain.
 	PolkadotBulletin,
+	/// The CORD Loom mainnet Relay-chain
+	CordLoom,
 }
 
 impl From<OldNetworkId> for Option<NetworkId> {
@@ -125,6 +127,7 @@ impl From<NewNetworkId> for NetworkId {
 			BitcoinCore => Self::BitcoinCore,
 			BitcoinCash => Self::BitcoinCash,
 			PolkadotBulletin => Self::PolkadotBulletin,
+			CordLoom => Self::CordLoom,
 		}
 	}
 }
